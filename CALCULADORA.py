@@ -54,8 +54,8 @@ def hacer_botones(ventana, entrada):
     def poner_0():
         agregar_pantalla("0")
     
-    def poner_punto():
-        agregar_pantalla(".")
+    def poner_ans():
+        agregar_pantalla("ANS")
     
     def poner_c():
         entrada.delete(0, tk.END)
@@ -77,29 +77,29 @@ def hacer_botones(ventana, entrada):
             operacion = entrada.get()
             if "+" in operacion:
                 partes = operacion.split("+")
-                num1 = float(partes[0])
-                num2 = float(partes[1])
+                num1 = int(partes[0])
+                num2 = int(partes[1])
                 resultado_final = sumar(num1, num2)
                 entrada.delete(0, tk.END)
                 entrada.insert(tk.END, resultado_final)
             elif "-" in operacion:
                 partes = operacion.split("-")
-                num1 = float(partes[0])
-                num2 = float(partes[1])
+                num1 = int(partes[0])
+                num2 = int(partes[1])
                 resultado_final = restar(num1, num2)
                 entrada.delete(0, tk.END)
                 entrada.insert(tk.END, resultado_final)
             elif "*" in operacion:
                 partes = operacion.split("*")
-                num1 = float(partes[0])
-                num2 = float(partes[1])
+                num1 = int(partes[0])
+                num2 = int(partes[1])
                 resultado_final = multiplicar(num1, num2)
                 entrada.delete(0, tk.END)
                 entrada.insert(tk.END, resultado_final)
             elif "/" in operacion:
                 partes = operacion.split("/")
-                num1 = float(partes[0])
-                num2 = float(partes[1])
+                num1 = int(partes[0])
+                num2 = int(partes[1])
                 resultado_final = dividir(num1, num2)
                 entrada.delete(0, tk.END)
                 entrada.insert(tk.END, resultado_final)
@@ -151,9 +151,9 @@ def hacer_botones(ventana, entrada):
     #Boton "0":
     boton0 = tk.Button(ventana, text="0", bg="#334155", fg="white", font=("Arial", 18), width = 5, height = 2,command = poner_0 )
     boton0.grid(row =4, column=0, padx = 3, pady = 3)
-    #Boton ".":
-    boton_punto = tk.Button(ventana, text=".", bg="#334155", fg="white", font=("Arial", 18),  width = 5, height = 2, command = poner_punto)
-    boton_punto.grid(row =4, column=1, padx = 3, pady = 3)
+    #Boton "ANS":
+    boton_ans = tk.Button(ventana, text="ANS", bg="#334155", fg="white", font=("Arial", 18),  width = 5, height = 2, command = poner_ans)
+    boton_ans.grid(row =4, column=1, padx = 3, pady = 3)
     #Boton "C":
     botonC = tk.Button(ventana, text="C", bg="#ef4444", fg="white", font=("Arial", 18), width = 5, height = 2, command = poner_c)
     botonC.grid(row =4, column=2, padx = 3, pady = 3)
