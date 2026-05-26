@@ -59,6 +59,44 @@ def hacer_botones(ventana, entrada):
         global ans
         agregar_pantalla(str(ans))
     
+    # Boton "7":
+    boton7 = tk.Button(ventana, text="7", bg="#334155", fg="white", font=("Arial", 18), width = 5, height = 2, command = poner_7)
+    boton7.grid(row = 1, column = 0, padx = 3, pady = 3)
+    # Boton "8":
+    boton8 = tk.Button(ventana, text = "8",bg="#334155", fg="white", font=("Arial", 18),width = 5, height = 2, command = poner_8)
+    boton8.grid(row = 1, column = 1, padx = 3, pady = 3)
+    # Boton "9":
+    boton9 = tk.Button(ventana, text = "9",bg="#334155", fg="white", font=("Arial", 18), width = 5, height = 2, command = poner_9)
+    boton9.grid(row = 1, column = 2,  padx = 3, pady = 3)
+    #Boton "4":
+    boton4 = tk.Button(ventana, text="4", bg="#334155", fg="white", font=("Arial", 18), width = 5, height = 2, command = poner_4)
+    boton4.grid(row =2, column=0, padx = 3, pady = 3)
+    #Boton "5":
+    boton5 = tk.Button(ventana, text="5", bg="#334155", fg="white", font=("Arial", 18),  width = 5, height = 2, command = poner_5)
+    boton5.grid(row =2, column=1, padx = 3, pady = 3)
+    #Boton "6":
+    boton6 = tk.Button(ventana, text="6", bg="#334155", fg="white", font=("Arial", 18), width = 5, height = 2, command = poner_6)
+    boton6.grid(row =2, column=2, padx = 3, pady = 3)
+    #Boton "1":
+    boton1 = tk.Button(ventana, text="1", bg="#334155", fg="white", font=("Arial", 18), width = 5, height = 2, command = poner_1)
+    boton1.grid(row =3, column=0, padx = 3, pady = 3)
+    #Boton "2":
+    boton2 = tk.Button(ventana, text="2", bg="#334155", fg="white", font=("Arial", 18),  width = 5, height = 2, command = poner_2)
+    boton2.grid(row =3, column=1, padx = 3, pady = 3)
+    #Boton "3":
+    boton3 = tk.Button(ventana, text="3", bg="#334155", fg="white", font=("Arial", 18), width = 5, height = 2, command = poner_3)
+    boton3.grid(row =3, column=2, padx = 3, pady = 3)
+    #Boton "0":
+    boton0 = tk.Button(ventana, text="0", bg="#334155", fg="white", font=("Arial", 18), width = 5, height = 2,command = poner_0 )
+    boton0.grid(row =4, column=0, padx = 3, pady = 3)
+    #Boton "ANS":
+    boton_ans = tk.Button(ventana, text="ANS", bg="#334155", fg="white", font=("Arial", 18),  width = 5, height = 2, command = poner_ans)
+    boton_ans.grid(row =4, column=1, padx = 3, pady = 3)
+
+def operaciones(ventana, entrada):
+    def agregar_pantalla(valor):
+        entrada.insert(tk.END, valor)
+    
     def poner_c():
         entrada.delete(0, tk.END)
     
@@ -114,53 +152,18 @@ def hacer_botones(ventana, entrada):
             entrada.delete(0, tk.END)
             entrada.insert(tk.END, "ERROR")
     
-    # Boton "7":
-    boton7 = tk.Button(ventana, text="7", bg="#334155", fg="white", font=("Arial", 18), width = 5, height = 2, command = poner_7)
-    boton7.grid(row = 1, column = 0, padx = 3, pady = 3)
-    # Boton "8":
-    boton8 = tk.Button(ventana, text = "8",bg="#334155", fg="white", font=("Arial", 18),width = 5, height = 2, command = poner_8)
-    boton8.grid(row = 1, column = 1, padx = 3, pady = 3)
-    # Boton "9":
-    boton9 = tk.Button(ventana, text = "9",bg="#334155", fg="white", font=("Arial", 18), width = 5, height = 2, command = poner_9)
-    boton9.grid(row = 1, column = 2,  padx = 3, pady = 3)
+
     # Boton "/":
     boton_dividir = tk.Button(ventana, text = "/", bg="#0ea5e9", fg="white", font=("Arial", 18), width = 5, height = 2, command = poner_division)
     boton_dividir.grid(row = 1, column = 3, padx = 3, pady = 3)
     
-    #Boton "4":
-    boton4 = tk.Button(ventana, text="4", bg="#334155", fg="white", font=("Arial", 18), width = 5, height = 2, command = poner_4)
-    boton4.grid(row =2, column=0, padx = 3, pady = 3)
-    #Boton "5":
-    boton5 = tk.Button(ventana, text="5", bg="#334155", fg="white", font=("Arial", 18),  width = 5, height = 2, command = poner_5)
-    boton5.grid(row =2, column=1, padx = 3, pady = 3)
-    #Boton "6":
-    boton6 = tk.Button(ventana, text="6", bg="#334155", fg="white", font=("Arial", 18), width = 5, height = 2, command = poner_6)
-    boton6.grid(row =2, column=2, padx = 3, pady = 3)
     #Boton "*":
     boton_multiplicar = tk.Button(ventana, text="*", bg="#0ea5e9", fg="white", font=("Arial", 18), width = 5, height = 2, command = poner_multiplicacion)
     boton_multiplicar.grid(row =2, column=3, padx = 3, pady = 3)
     
-    
-    #Boton "1":
-    boton1 = tk.Button(ventana, text="1", bg="#334155", fg="white", font=("Arial", 18), width = 5, height = 2, command = poner_1)
-    boton1.grid(row =3, column=0, padx = 3, pady = 3)
-    #Boton "2":
-    boton2 = tk.Button(ventana, text="2", bg="#334155", fg="white", font=("Arial", 18),  width = 5, height = 2, command = poner_2)
-    boton2.grid(row =3, column=1, padx = 3, pady = 3)
-    #Boton "3":
-    boton3 = tk.Button(ventana, text="3", bg="#334155", fg="white", font=("Arial", 18), width = 5, height = 2, command = poner_3)
-    boton3.grid(row =3, column=2, padx = 3, pady = 3)
     #Boton "-":
     boton_resta = tk.Button(ventana, text="-", bg="#0ea5e9", fg="white", font=("Arial", 18), width = 5, height = 2, command = poner_resta)
     boton_resta.grid(row =3, column=3, padx = 3, pady = 3)
-    
-    
-    #Boton "0":
-    boton0 = tk.Button(ventana, text="0", bg="#334155", fg="white", font=("Arial", 18), width = 5, height = 2,command = poner_0 )
-    boton0.grid(row =4, column=0, padx = 3, pady = 3)
-    #Boton "ANS":
-    boton_ans = tk.Button(ventana, text="ANS", bg="#334155", fg="white", font=("Arial", 18),  width = 5, height = 2, command = poner_ans)
-    boton_ans.grid(row =4, column=1, padx = 3, pady = 3)
     #Boton "C":
     botonC = tk.Button(ventana, text="C", bg="#ef4444", fg="white", font=("Arial", 18), width = 5, height = 2, command = poner_c)
     botonC.grid(row =4, column=2, padx = 3, pady = 3)
@@ -176,14 +179,16 @@ def la_interfaz(ventana):
     # PANTALLA:
     entrada = tk.Entry(ventana, font=("Arial", 24), border = 0, bg="#1e3a5f", fg="white", justify="right")
     entrada.grid(row = 0, column = 0, columnspan = 4, ipadx = 8, ipady = 20, padx = 10, pady = 10 )
+    
     hacer_botones(ventana, entrada)
+    operaciones(ventana, entrada)
 
 def iniciar_calculadora():
     ventana = tk.Tk()
     ventana.title("CALCULADORA")
     ventana.resizable(False, False)
     ventana.config(bg="#0f172a")
-
+    
     la_interfaz(ventana)
     ventana.mainloop()
 
