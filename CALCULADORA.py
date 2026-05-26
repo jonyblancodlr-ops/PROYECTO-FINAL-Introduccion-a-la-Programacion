@@ -18,7 +18,8 @@ def dividir(num1,num2):
     if num2 == 0:
         return "ERROR"
     else:
-        resultado = num1 / num2
+        division = num1 / num2
+        resultado = int(division)
         return resultado
 
 def hacer_botones(ventana, entrada):
@@ -100,6 +101,11 @@ def operaciones(ventana, entrada):
     def poner_c():
         entrada.delete(0, tk.END)
     
+    def borrar():
+        texto_actual = entrada.get()
+        if len(texto_actual) > 0:
+            entrada.delete(len(texto_actual) - 1, tk.END)
+    
     def poner_suma():
         agregar_pantalla("+")
     
@@ -170,10 +176,13 @@ def operaciones(ventana, entrada):
     #Boton "+":
     boton_sumar = tk.Button(ventana, text="+", bg="#0ea5e9", fg="white", font=("Arial", 18), width = 5, height = 2, command = poner_suma)
     boton_sumar.grid(row =4, column=3, padx = 3, pady = 3)
-    
     #Boton "=":
     boton_igual = tk.Button(ventana, text="=", bg = "#0ea5e9", fg="white", font=("Arial", 18),height = 2, command = poner_igual)
-    boton_igual.grid(row = 5, column = 0, columnspan = 4, padx = 3, pady=3, sticky="nsew" )
+    boton_igual.grid(row = 5, column = 0, columnspan = 3, padx = 3, pady=3, sticky="nsew" )
+    #Boton de borrar:
+    boton_borrar = tk.Button(ventana, text="DEL", bg="#ef4444", fg="white", font=("Arial", 18), width =5, height=2, command=borrar)
+    boton_borrar.grid(row=5, column=3, padx=3, pady=3)
+    
 
 def la_interfaz(ventana):
     # PANTALLA:
