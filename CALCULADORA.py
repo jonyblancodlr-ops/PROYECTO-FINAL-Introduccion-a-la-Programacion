@@ -1,4 +1,5 @@
 import tkinter as tk
+ans = 0
 # Calculadora en Tkinter:
 
 def sumar(num1,num2):
@@ -55,7 +56,8 @@ def hacer_botones(ventana, entrada):
         agregar_pantalla("0")
     
     def poner_ans():
-        agregar_pantalla("ANS")
+        global ans
+        agregar_pantalla(str(ans))
     
     def poner_c():
         entrada.delete(0, tk.END)
@@ -73,6 +75,7 @@ def hacer_botones(ventana, entrada):
         agregar_pantalla("/")
         
     def poner_igual():
+        global ans
         try:
             operacion = entrada.get()
             if "+" in operacion:
@@ -80,6 +83,7 @@ def hacer_botones(ventana, entrada):
                 num1 = int(partes[0])
                 num2 = int(partes[1])
                 resultado_final = sumar(num1, num2)
+                ans = resultado_final
                 entrada.delete(0, tk.END)
                 entrada.insert(tk.END, resultado_final)
             elif "-" in operacion:
@@ -87,6 +91,7 @@ def hacer_botones(ventana, entrada):
                 num1 = int(partes[0])
                 num2 = int(partes[1])
                 resultado_final = restar(num1, num2)
+                ans = resultado_final
                 entrada.delete(0, tk.END)
                 entrada.insert(tk.END, resultado_final)
             elif "*" in operacion:
@@ -94,6 +99,7 @@ def hacer_botones(ventana, entrada):
                 num1 = int(partes[0])
                 num2 = int(partes[1])
                 resultado_final = multiplicar(num1, num2)
+                ans = resultado_final
                 entrada.delete(0, tk.END)
                 entrada.insert(tk.END, resultado_final)
             elif "/" in operacion:
@@ -101,6 +107,7 @@ def hacer_botones(ventana, entrada):
                 num1 = int(partes[0])
                 num2 = int(partes[1])
                 resultado_final = dividir(num1, num2)
+                ans = resultado_final
                 entrada.delete(0, tk.END)
                 entrada.insert(tk.END, resultado_final)
         except:
@@ -174,7 +181,6 @@ def la_interfaz(ventana):
 def iniciar_calculadora():
     ventana = tk.Tk()
     ventana.title("CALCULADORA")
-    #ventana.geometry("400x450")
     ventana.resizable(False, False)
     ventana.config(bg="#0f172a")
 
