@@ -1,20 +1,45 @@
 import tkinter as tk
 ans = 0
-# Calculadora en Tkinter:
-
 def sumar(num1,num2):
+    """Esta funcion realiza la suma de dos numeros enteros.
+    Args:
+        num1(int): Primer numero a sumar
+        num2(int): Segundo numero a sumar
+    Returns:
+        int: El resultado de la suma.
+    """
     resultado = num1 + num2
     return resultado
 
 def restar(num1,num2):
+    """ Esta funcion realiza la resta de 2 numeros enteros
+    Args:
+        num1(int): Primer numero a restar
+        num2(int): Segundo numero a restar
+    Returns:
+        int:El resultado de la resta
+    """
     resultado = num1 - num2
     return resultado
 
 def multiplicar(num1,num2):
+    """ Esta funcion realiza la multiplicacion de 2 numeros enteros.
+    Args:
+        num1(int): Primer numero de la multiplicacion
+        num2(int): Segundo numero de la multiplicacion
+    Returns:
+        int: El resultado de la multiplicacion"""
     resultado = num1 * num2
     return resultado
 
 def dividir(num1,num2):
+    """Esta funcion realiza la division de 2 numeros entreros.
+    Args:
+        num1(int): Dividendo (Numero a dividir)
+        num2(int): Divisor (numero que divide)
+    Returns:
+        int o str: El resultado entero de la division o 'ERROR' si se divide entre cero
+    """
     if num2 == 0:
         return "ERROR"
     else:
@@ -23,6 +48,12 @@ def dividir(num1,num2):
         return resultado
 
 def hacer_botones(ventana, entrada):
+    """Esta funcion lo que hace es crear y posicionar los botones numericos y de memoria
+    en la interfaz.
+    Args:
+        ventana (tk.Tk): La ventana principal de la aplicacion de la calculadora
+        entrada (tk.Entry): La pantalla donde se muestran los numeros
+    """
     def agregar_pantalla(valor):
         entrada.insert(tk.END, valor)
         
@@ -95,6 +126,11 @@ def hacer_botones(ventana, entrada):
     boton_ans.grid(row =4, column=1, padx = 3, pady = 3)
 
 def operaciones(ventana, entrada):
+    """Esta funcion crea los botones de operaciones matematicas, borrado y maneja la logica
+    de resolucion e historial.
+    Args:
+        ventana (tk.Tk): La ventana principal de la aplicacion de la calculadora
+        entrada (tk.Entry): La panatalla donde se muestran los resultados"""
     def agregar_pantalla(valor):
         entrada.insert(tk.END, valor)
     
@@ -199,13 +235,19 @@ def operaciones(ventana, entrada):
     
 
 def la_interfaz(ventana):
-    # PANTALLA:
+    """Esta funcion configura la pantalla de la calculadora y manda llamar a los bloques
+    constructores de los botones.
+    Args:
+        ventana(tk.Tk): La ventana principal de la aplicacion de la calculadora
+    """
     entrada = tk.Entry(ventana, font=("Arial", 24), border = 0, bg="#C1D0A3", fg="black", justify="right")
     entrada.grid(row = 0, column = 0, columnspan = 4, ipadx = 8, ipady = 20, padx = 10, pady = 10 )
     hacer_botones(ventana, entrada)
     operaciones(ventana, entrada)
 
 def iniciar_calculadora():
+    """Esta funcion inicializa la raiz de Tkinter, define propiedades
+    de la ventana y arranca el ciclo principal."""
     ventana = tk.Tk()
     ventana.title("CALCULADORA")
     ventana.resizable(False, False)
