@@ -1,5 +1,34 @@
 import tkinter as tk
-ans = 0
+from tkinter import messagebox
+ans = 0 #Variable encargada de guardar los resultados de operaciones anteriores
+def guardar_datos(operacion_texto):
+    """Esta funcion se encarga de escribir y registrar las operaciones hechas en la calculadora
+    en el archivo local
+    Args:
+        operacion_texto(str): La cadena con la operacion y su resultado a guardar"""
+    try:
+        with open("HISTORIAL.txt", "a") as archivo:
+            archivo.write("OPERACION:\n")
+            archivo.write(operacion_texto + "\n")
+            archivo.write("-"*30 + "\n")
+    except Exception as e:
+        messagebox.showerror("Error de archivo", f"Nose pudo escribir en el historial: {e}")
+
+def cargar_datos():
+    """Esta funcion se encarga de leer el archivo local y muestra el historial en 
+    un messagebox y muestra una alerta si el historial esta vacio"""
+    try:
+        with open("HISTORIAL.txt", "r") as archivo:
+            contenido = archivo.read()
+        if contenido.strip() == "":
+            messagebox.showinfo("Historial", "El historial de operaciones esta vacio")
+        else:
+            messagebox.showinfo("Historial de operaciones", contenido)
+    except FileNotFoundError:
+        messagebox.showinfo("Historial", "No hay operaciones en el historial todavia")
+    except Exception as e:
+        messagebox.showerror("Error de archivo", f"No se pudo leer el historial: {e}")
+
 def sumar(num1,num2):
     """Esta funcion realiza la suma de dos numeros enteros.
     Args:
@@ -59,34 +88,24 @@ def hacer_botones(ventana, entrada):
         
     def poner_7():
         agregar_pantalla("7")
-    
     def poner_8():
         agregar_pantalla("8")
-    
     def poner_9():
         agregar_pantalla("9")
-        
     def poner_4():
         agregar_pantalla("4")
-    
     def poner_5():
         agregar_pantalla("5")
-    
     def poner_6():
         agregar_pantalla("6")
-    
     def poner_1():
         agregar_pantalla("1")
-    
     def poner_2():
         agregar_pantalla("2")
-    
     def poner_3():
         agregar_pantalla("3")
-    
     def poner_0():
         agregar_pantalla("0")
-    
     def poner_ans():
         global ans
         agregar_pantalla(str(ans))
@@ -164,10 +183,7 @@ def operaciones(ventana, entrada):
                 num2 = int(partes[1])
                 resultado_final = sumar(num1, num2)
                 ans = resultado_final
-                with open("HISTORIAL.txt", "a") as archivo:
-                    archivo.write("OPERACION:" + "\n")
-                    archivo.write(str(num1) + " + " + str(num2) + " = " + str(resultado_final) + "\n")
-                    archivo.write("-" * 30 + "\n")
+                guardar_datos(f"{num1} + {num2} = {resultado_final}")
                 entrada.delete(0, tk.END)
                 entrada.insert(tk.END, resultado_final)
             elif "-" in operacion:
@@ -176,10 +192,7 @@ def operaciones(ventana, entrada):
                 num2 = int(partes[1])
                 resultado_final = restar(num1, num2)
                 ans = resultado_final
-                with open("HISTORIAL.txt", "a") as archivo:
-                    archivo.write("OPERACION:" + "\n")
-                    archivo.write(str(num1) + " - " + str(num2) + " = " + str(resultado_final) + "\n")
-                    archivo.write("-" * 30 + "\n")
+                guardar_datos(f"{num1} - {num2} = {resultado_final}")
                 entrada.delete(0, tk.END)
                 entrada.insert(tk.END, resultado_final)
             elif "*" in operacion:
@@ -188,10 +201,7 @@ def operaciones(ventana, entrada):
                 num2 = int(partes[1])
                 resultado_final = multiplicar(num1, num2)
                 ans = resultado_final
-                with open("HISTORIAL.txt", "a") as archivo:
-                    archivo.write("OPERACION:" + "\n")
-                    archivo.write(str(num1) + " * " + str(num2) + " = " + str(resultado_final) + "\n")
-                    archivo.write("-" * 30 + "\n")
+                guardar_datos(f"{num1} * {num2} = {resultado_final}")
                 entrada.delete(0, tk.END)
                 entrada.insert(tk.END, resultado_final)
             elif "/" in operacion:
@@ -199,16 +209,19 @@ def operaciones(ventana, entrada):
                 num1 = int(partes[0])
                 num2 = int(partes[1])
                 resultado_final = dividir(num1, num2)
-                ans = resultado_final
-                with open("HISTORIAL.txt", "a") as archivo:
-                    archivo.write("OPERACION:" + "\n")
-                    archivo.write(str(num1) + " / " + str(num2) + " = " + str(resultado_final) + "\n")
-                    archivo.write("-" * 30 + "\n")
-                entrada.delete(0, tk.END)
-                entrada.insert(tk.END, resultado_final)
+                if resultado_final == "ERROR":
+                    messagebox.showwarning("Division invalida", "No se puede dividir entre cer :(")
+                    entrada.delete(0, tk.END)
+                    entrada.insert(tk.END, "ERROR")
+                else:
+                    ans = resultado_final
+                    guardar_datos(f"{num1} * {num2} = {resultado_final}")
+                    entrada.delete(0, tk.END)
+                    entrada.insert(tk.END, resultado_final)
         except:
             entrada.delete(0, tk.END)
             entrada.insert(tk.END, "ERROR")
+            messagebox.showerror("Error de entrada", "Operacion no valida revisa los valores ingresados porfa :(")
     
 
     # Boton "/":
@@ -230,9 +243,11 @@ def operaciones(ventana, entrada):
     boton_igual = tk.Button(ventana, text="=", bg = "#F36211", fg="white", font=("Arial", 18),height = 2, command = poner_igual)
     boton_igual.grid(row = 5, column = 0, columnspan = 3, padx = 3, pady=3, sticky="nsew" )
     #Boton de borrar:
-    boton_borrar = tk.Button(ventana, text="DEL", bg="#E01E15", fg="white", font=("Arial", 18), width =5, height=2, command=borrar)
+    boton_borrar = tk.Button(ventana, text="Borrar", bg="#E01E15", fg="white", font=("Arial", 17, "bold"), width =5, height=2, command=borrar)
     boton_borrar.grid(row=5, column=3, padx=3, pady=3)
-    
+    # Boton historial:
+    boton_historial = tk.Button(ventana, text="Ver historial", bg="#4B5156", fg="white", font=("Arial", 12, "bold"), height=2, command=cargar_datos)
+    boton_historial.grid(row=6, column = 0, columnspan=4, padx=3, pady=3, sticky="nsew")
 
 def la_interfaz(ventana):
     """Esta funcion configura la pantalla de la calculadora y manda llamar a los bloques
