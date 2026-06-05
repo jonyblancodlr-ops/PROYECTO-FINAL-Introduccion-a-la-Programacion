@@ -7,6 +7,7 @@ def guardar_datos(operacion_texto):
     Args:
         operacion_texto(str): La cadena con la operacion y su resultado a guardar"""
     try:
+        # Abre en modo append "a" para escribir datos nuevos sin borrar otros
         with open("HISTORIAL.txt", "a") as archivo:
             archivo.write("OPERACION:\n")
             archivo.write(operacion_texto + "\n")
@@ -18,13 +19,16 @@ def cargar_datos():
     """Esta funcion se encarga de leer el archivo local y muestra el historial en 
     un messagebox y muestra una alerta si el historial esta vacio"""
     try:
+        # Abre en modo read "r" para leer el historial
         with open("HISTORIAL.txt", "r") as archivo:
             contenido = archivo.read()
+        #Verificacion si el archivo existe pero no tiene nada escrito
         if contenido.strip() == "":
             messagebox.showinfo("Historial", "El historial de operaciones esta vacio")
         else:
             messagebox.showinfo("Historial de operaciones", contenido)
     except FileNotFoundError:
+        # Si el archivo txt aun no ha sido creado por el programa
         messagebox.showinfo("Historial", "No hay operaciones en el historial todavia")
     except Exception as e:
         messagebox.showerror("Error de archivo", f"No se pudo leer el historial: {e}")
@@ -69,12 +73,72 @@ def dividir(num1,num2):
     Returns:
         int o str: El resultado entero de la division o 'ERROR' si se divide entre cero
     """
+    # Validacion para evitar la division entre cero
     if num2 == 0:
         return "ERROR"
     else:
         division = num1 / num2
         resultado = int(division)
         return resultado
+
+def evaluar_expresion(expresion):
+    """Esta funcion sirve para evaluar expresiones matematicas respetando la jerarquia
+    de operaciones y poder realizar operaciones largas
+    Args:
+        expresion(str): La expresion matematica como texto
+    Returns:
+        int o str: El resultado entero o "ERROR" si hay division entre cero
+    """
+    numeros = [] #Lista para guardar los numeros de la expresion
+    operadores = [] #Lista para agregar los operadores matematicos de la expresion
+    numero_actual = "" #Variable para ir armando los numeros dados 
+    #SEPARACION DE NUMEROS Y OPERADORES
+    for i in range(len(expresion)):
+        caracter = expresion[i]
+        
+        signo_negativo = (caracter == "-") and (i == 0 or expresion[i-1] in "+-*/")#Detecta los negativos
+        
+        if caracter in "+*-/" and not signo_negativo:
+            if numero_actual != "":
+                numeros.append(int(numero_actual))
+                numero_actual = ""
+            operadores.append(caracter)
+        else:
+            numero_actual += caracter #Si no es operador pega el numero
+    
+    if numero_actual != "": #Por si queda un ultimo numero en la expresion
+        numeros.append(int(numero_actual))
+    
+    if len(numeros) == 0:
+        return "ERROR"
+    # RESOLUCION DE MULTIPLICACIONES O DIVISIONES SI HAY:
+    i = 0 #Revision de operadores por posicion en este caso el 0
+    while i < len(operadores):
+        if operadores[i] == "*":
+            resultado = multiplicar(numeros[i], numeros[i+1])
+            numeros[i] = resultado
+            numeros.pop(i+1)
+            operadores.pop(i)
+        elif operadores[i] == "/":
+            resultado = dividir(numeros[i], numeros[i+1])
+            if resultado == "ERROR":
+                return "ERROR"
+            numeros[i] = resultado
+            numeros.pop(i+1)
+            operadores.pop(i)
+        else:
+            i += 1
+    #RESOLUCION DE SUMAS Y RESTAS SI HAY EN LA EXPRESION:
+    while len(operadores) > 0:
+        if operadores[0] == "+":
+            resultado = sumar(numeros[0], numeros[1])
+        else:
+            resultado = restar(numeros[0], numeros[1])
+        numeros[0] = resultado
+        numeros.pop(1)
+        operadores.pop(0)
+        
+    return numeros[0]
 
 def hacer_botones(ventana, entrada):
     """Esta funcion lo que hace es crear y posicionar los botones numericos y de memoria
@@ -109,7 +173,7 @@ def hacer_botones(ventana, entrada):
     def poner_ans():
         global ans
         agregar_pantalla(str(ans))
-    
+    #Configuracion visual y posicionamiento en cuadricula (grid) de los botones numericos
     # Boton "7":
     boton7 = tk.Button(ventana, text="7", bg="#798186", fg="white", font=("Arial", 18), width = 5, height = 2, command = poner_7)
     boton7.grid(row = 1, column = 0, padx = 3, pady = 3)
@@ -154,10 +218,11 @@ def operaciones(ventana, entrada):
         entrada.insert(tk.END, valor)
     
     def poner_c():
-        entrada.delete(0, tk.END)
+        entrada.delete(0, tk.END) #Limpia la pantalla desde el inicio(0) hasta el final
     
     def borrar():
         texto_actual = entrada.get()
+        #Verifica que haya texto en la pantalla para borrar el ultimo caracter
         if len(texto_actual) > 0:
             entrada.delete(len(texto_actual) - 1, tk.END)
     
@@ -175,50 +240,22 @@ def operaciones(ventana, entrada):
         
     def poner_igual():
         global ans
-        try:
+        try: # Usamos try_except para capturar los errores de valores ingresados erroneos  
             operacion = entrada.get()
-            if "+" in operacion:
-                partes = operacion.split("+")
-                num1 = int(partes[0])
-                num2 = int(partes[1])
-                resultado_final = sumar(num1, num2)
+            # MANDAMOS LA EXPRESION A LA FUNCION DE EVALUACION:
+            resultado_final = evaluar_expresion(operacion)
+            
+            if resultado_final == "ERROR":
+                messagebox.showwarning("Division invalida", "No se puede dividir entre cero :(")
+                entrada.delete(0, tk.END)
+                entrada.insert(tk.END, "ERROR")
+            else:
                 ans = resultado_final
-                guardar_datos(f"{num1} + {num2} = {resultado_final}")
+                guardar_datos(f"{operacion} = {resultado_final}")
                 entrada.delete(0, tk.END)
                 entrada.insert(tk.END, resultado_final)
-            elif "-" in operacion:
-                partes = operacion.split("-")
-                num1 = int(partes[0])
-                num2 = int(partes[1])
-                resultado_final = restar(num1, num2)
-                ans = resultado_final
-                guardar_datos(f"{num1} - {num2} = {resultado_final}")
-                entrada.delete(0, tk.END)
-                entrada.insert(tk.END, resultado_final)
-            elif "*" in operacion:
-                partes = operacion.split("*")
-                num1 = int(partes[0])
-                num2 = int(partes[1])
-                resultado_final = multiplicar(num1, num2)
-                ans = resultado_final
-                guardar_datos(f"{num1} * {num2} = {resultado_final}")
-                entrada.delete(0, tk.END)
-                entrada.insert(tk.END, resultado_final)
-            elif "/" in operacion:
-                partes = operacion.split("/")
-                num1 = int(partes[0])
-                num2 = int(partes[1])
-                resultado_final = dividir(num1, num2)
-                if resultado_final == "ERROR":
-                    messagebox.showwarning("Division invalida", "No se puede dividir entre cer :(")
-                    entrada.delete(0, tk.END)
-                    entrada.insert(tk.END, "ERROR")
-                else:
-                    ans = resultado_final
-                    guardar_datos(f"{num1} * {num2} = {resultado_final}")
-                    entrada.delete(0, tk.END)
-                    entrada.insert(tk.END, resultado_final)
-        except:
+        except Exception:
+            # Si el codigo falla por datos erroneos, varios simbolos, etc, muestra un erro
             entrada.delete(0, tk.END)
             entrada.insert(tk.END, "ERROR")
             messagebox.showerror("Error de entrada", "Operacion no valida revisa los valores ingresados porfa :(")
@@ -269,6 +306,6 @@ def iniciar_calculadora():
     ventana.config(bg="#0A1C20")
     
     la_interfaz(ventana)
-    ventana.mainloop()
+    ventana.mainloop() #Arranca el loop infinito para que la ventana se mantenga abierta 
 
 iniciar_calculadora()
